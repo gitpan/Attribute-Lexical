@@ -1,0 +1,21 @@
+.cvsignore
+Build.PL
+Changes
+MANIFEST
+META.yml
+Makefile.PL
+README
+lib/Attribute/Lexical.pm
+t/apply.t
+t/caller.t
+t/error.t
+t/pod_cvg.t
+t/pod_syn.t
+t/scope.t
+t/scope0.pm
+t/scope1.pm
+t/scope2.pm
+t/scope3.pm
+t/scope4.pm
+t/share.t
+SIGNATURE    Added here by Module::Build
