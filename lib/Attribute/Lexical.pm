@@ -129,21 +129,21 @@ take special measures to cause code to run later.
 
 package Attribute::Lexical;
 
+{ use 5.006001; }
 use warnings;
 use strict;
 
 use constant _KLUDGE_HINT_LOCALIZE_HH   => $] < 5.009004;
 use constant _KLUDGE_RUNTIME_HINTS      => $] < 5.009004;
 use constant _KLUDGE_FAKE_MRO           => $] < 5.009005;
-use constant _KLUDGE_LEAK_GUARD         => 1;   # unsolved bug#68590
 use constant _KLUDGE_UNIVERSAL_INVOCANT => 1;   # unsolved bug#68654
-use constant _KLUDGE_BEGIN_FILENAME     => 1;   # unsolved bug#68712
 
 use Carp qw(croak);
+use Lexical::SealRequireHints 0.001;
 use Params::Classify 0.000 qw(is_string is_ref);
 use if !_KLUDGE_FAKE_MRO, "mro";
 
-our $VERSION = "0.000";
+our $VERSION = "0.001";
 
 # Hints stored in %^H only maintain referenceful structure during the
 # compilation phase.  Copies of %^H that are accessible via caller(),
@@ -153,9 +153,13 @@ our $VERSION = "0.000";
 # form of the reference.
 my %interned_handler;
 
+{
+	package Attribute::Lexical::UNIVERSAL;
+	our $VERSION = "0.001";
+}
+
 unshift @UNIVERSAL::ISA, "Attribute::Lexical::UNIVERSAL";
 
-$Attribute::Lexical::UNIVERSAL::VERSION = $VERSION;
 foreach my $type (qw(SCALAR ARRAY HASH CODE)) { eval "
 	package Attribute::Lexical::UNIVERSAL;
 	my \$type = \"$type\";
@@ -259,26 +263,6 @@ sub _check_attribute_name($) {
 	\z/x;
 }
 
-BEGIN { if(_KLUDGE_LEAK_GUARD) { eval q{ sub _compiling_filename() {
-	my @caller;
-	my $level;
-	for($level = 1; ; $level++) {
-		@caller = caller($level);
-		return "" unless @caller;
-		last if $caller[3] =~ /::BEGIN\z/;
-	}
-	if(_KLUDGE_BEGIN_FILENAME) {
-		# On earlier perls, a "require" inside a BEGIN block
-		# (or a "use") that causes loading of a new file makes
-		# caller() return the name of the new file for stack
-		# frames outside the BEGIN.  So use the filename of the
-		# BEGIN block itself, which is probably correct.
-		return (caller($level-1))[1];
-	} else {
-		return $caller[1];
-	}
-} 1; } or die $@; } }
-
 =head1 PACKAGE METHODS
 
 All these methods are meant to be invoked on the C<Attribute::Lexical>
@@ -305,13 +289,6 @@ BEGIN { unless(_KLUDGE_RUNTIME_HINTS) { eval q{ sub handler_for_caller {
 	my($class, $caller, $name) = @_;
 	_check_attribute_name($name);
 	my $h = ($caller->[10] || {})->{"Attribute::Lexical/$name"};
-	if(_KLUDGE_LEAK_GUARD && defined($h)) {
-		# On earlier perls %^H doesn't get cleared when compiling
-		# a new file, so each hint must be tagged with the name
-		# of the file that it belongs to.
-		($h, my $hint_filename) = ($h =~ /\A([^,]*),(.*)\z/s);
-		$h = undef unless $hint_filename eq $caller->[1];
-	}
 	return defined($h) ? $interned_handler{$h} : undef;
 } 1; } or die $@; } }
 
@@ -344,13 +321,6 @@ sub handler_for_compilation {
 	my($class, $name) = @_;
 	_check_attribute_name($name);
 	my $h = $^H{"Attribute::Lexical/$name"};
-	if(_KLUDGE_LEAK_GUARD && defined($h)) {
-		# On earlier perls %^H doesn't get cleared when compiling
-		# a new file, so each hint must be tagged with the name
-		# of the file that it belongs to.
-		($h, my $hint_filename) = ($h =~ /\A([^,]*),(.*)\z/s);
-		$h = undef unless $hint_filename eq _compiling_filename();
-	}
 	return defined($h) ? $interned_handler{$h} : undef;
 }
 
@@ -377,15 +347,7 @@ sub import {
 		croak "attribute handler must be a subroutine"
 			unless is_ref($handler, "CODE");
 		$interned_handler{"$handler"} = $handler;
-		if(_KLUDGE_LEAK_GUARD) {
-			# On earlier perls %^H doesn't get cleared when
-			# compiling a new file, so each hint must be tagged
-			# with the name of the file that it belongs to.
-			$^H{"Attribute::Lexical/$name"} =
-				"$handler,"._compiling_filename();
-		} else {
-			$^H{"Attribute::Lexical/$name"} = "$handler";
-		}
+		$^H{"Attribute::Lexical/$name"} = "$handler";
 	}
 }
 
@@ -413,13 +375,7 @@ sub unimport {
 		my $key = "Attribute::Lexical/$name";
 		next unless exists $^H{$key};
 		if($handler) {
-			if(_KLUDGE_LEAK_GUARD) {
-				my($h) = ($^H{$key} =~ /\A([^,]*),/);
-				next unless $interned_handler{$h} == $handler;
-			} else {
-				next unless $interned_handler{$^H{$key}} ==
-						$handler;
-			}
+			next unless $interned_handler{$^H{$key}} == $handler;
 		}
 		delete $^H{$key};
 	}
@@ -445,23 +401,6 @@ module into applying the wrong attribute handler.
 
 Prior to Perl 5.8, attributes don't work at all on C<our> variables.
 Only function attributes can be used effectively on such old versions.
-
-There is a bug in the handling of the C<%^H> variable that
-causes lexical state in one file to leak into another that is
-L<require|perlfunc/require>d/L<use|perlfunc/use>d from it.  This
-module works around the bug by tracking filenames.  It would get
-confused if a single file is recursively invoked, but ordinary use
-of L<require|perlfunc/require> and L<use|perlfunc/use> won't do that.
-The workaround also prevents declarations from propagating into string
-L<eval|perlfunc/eval>.  The underlying bug will probably be fixed in
-Perl 5.10.2.
-
-Perl versions vary in whether and which lexical state propagates into a
-string L<eval|perlfunc/eval>.  From Perl 5.9.3 onwards it is intended that
-all lexical state should so propagate, but the workaround required for the
-C<%^H> bug prevents attribute declarations from effectively propagating.
-The behaviour of this module will therefore likely change when that bug
-is fixed.
 
 This module tries quite hard to play nicely with other modules that manage
 attributes, in particular L<Attribute::Handlers>.  However, the underlying

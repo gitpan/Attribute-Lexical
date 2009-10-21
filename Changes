@@ -1,3 +1,23 @@
+version 0.001; 2009-10-21
+
+  * use Lexical::SealRequireHints in place of the filename-based
+    workaround for %^H leakage, thus allowing lexical attribute
+    definitions to propagate into string evals, on Perl versions that
+    allow it
+
+  * document Attribute::Lexical::UNIVERSAL in its own POD file
+
+  * declare version of Attribute::Lexical::UNIVERSAL in a way that
+    indexers are more likely to parse successfully
+
+  * check for required Perl version at runtime
+
+  * change perl version declared in build_requires to match that declared
+    in requires, to avoid confusing tools that can only handle a single
+    dependency list
+
+  * remove bogus "exit 0" from Build.PL
+
 version 0.000; 2009-08-24
 
   * initial released version

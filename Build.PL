@@ -1,3 +1,4 @@
+{ use 5.006; }
 use warnings;
 use strict;
 
@@ -5,17 +6,17 @@ use Module::Build;
 
 Module::Build->new(
 	module_name => "Attribute::Lexical",
-	dist_version => "0.000",
 	license => "perl",
 	build_requires => {
 		"Module::Build" => 0,
 		"Test::More" => 0,
-		"perl" => "5.006",
+		"perl" => "5.006001",
 		"strict" => 0,
 		"warnings" => 0,
 	},
 	requires => {
 		"Carp" => 0,
+		"Lexical::SealRequireHints" => "0.001",
 		"Params::Classify" => 0,
 		"constant" => 0,
 		"if" => 0,
@@ -29,4 +30,4 @@ Module::Build->new(
 	sign => 1,
 )->create_build_script;
 
-exit 0;
+1;

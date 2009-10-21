@@ -6,6 +6,7 @@ META.yml
 Makefile.PL
 README
 lib/Attribute/Lexical.pm
+lib/Attribute/Lexical/UNIVERSAL.pm
 t/apply.t
 t/caller.t
 t/error.t
