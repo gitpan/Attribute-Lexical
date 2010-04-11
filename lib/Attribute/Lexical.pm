@@ -133,17 +133,17 @@ package Attribute::Lexical;
 use warnings;
 use strict;
 
-use constant _KLUDGE_HINT_LOCALIZE_HH   => $] < 5.009004;
-use constant _KLUDGE_RUNTIME_HINTS      => $] < 5.009004;
-use constant _KLUDGE_FAKE_MRO           => $] < 5.009005;
+use constant _KLUDGE_HINT_LOCALIZE_HH   => "$]" < 5.009004;
+use constant _KLUDGE_RUNTIME_HINTS      => "$]" < 5.009004;
+use constant _KLUDGE_FAKE_MRO           => "$]" < 5.009005;
 use constant _KLUDGE_UNIVERSAL_INVOCANT => 1;   # unsolved bug#68654
 
 use Carp qw(croak);
-use Lexical::SealRequireHints 0.001;
+use Lexical::SealRequireHints 0.003;
 use Params::Classify 0.000 qw(is_string is_ref);
 use if !_KLUDGE_FAKE_MRO, "mro";
 
-our $VERSION = "0.001";
+our $VERSION = "0.002";
 
 # Hints stored in %^H only maintain referenceful structure during the
 # compilation phase.  Copies of %^H that are accessible via caller(),
@@ -155,7 +155,7 @@ my %interned_handler;
 
 {
 	package Attribute::Lexical::UNIVERSAL;
-	our $VERSION = "0.001";
+	our $VERSION = "0.002";
 }
 
 unshift @UNIVERSAL::ISA, "Attribute::Lexical::UNIVERSAL";
@@ -424,7 +424,7 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2009 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2009, 2010 Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 LICENSE
 

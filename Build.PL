@@ -7,6 +7,10 @@ use Module::Build;
 Module::Build->new(
 	module_name => "Attribute::Lexical",
 	license => "perl",
+	configure_requires => {
+		"Module::Build" => 0,
+		"perl" => "5.006001",
+	},
 	build_requires => {
 		"Module::Build" => 0,
 		"Test::More" => 0,
@@ -16,7 +20,7 @@ Module::Build->new(
 	},
 	requires => {
 		"Carp" => 0,
-		"Lexical::SealRequireHints" => "0.001",
+		"Lexical::SealRequireHints" => "0.003",
 		"Params::Classify" => 0,
 		"constant" => 0,
 		"if" => 0,

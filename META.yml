@@ -1,37 +1,40 @@
 ---
-name: Attribute-Lexical
-version: 0.001
+abstract: 'sane scoping of function/variable attributes'
 author:
   - 'Andrew Main (Zefram) <zefram@fysh.org>'
-abstract: sane scoping of function/variable attributes
-license: perl
-resources:
-  license: http://dev.perl.org/licenses/
-requires:
-  Carp: 0
-  Lexical::SealRequireHints: 0.001
-  Params::Classify: 0
-  constant: 0
-  if: 0
-  perl: 5.006001
-  strict: 0
-  warnings: 0
 build_requires:
   Module::Build: 0
   Test::More: 0
   perl: 5.006001
   strict: 0
   warnings: 0
+configure_requires:
+  Module::Build: 0
+  perl: 5.006001
+distribution_type: module
 dynamic_config: 0
+generated_by: 'Module::Build version 0.3607'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Attribute-Lexical
 provides:
   Attribute::Lexical:
     file: lib/Attribute/Lexical.pm
-    version: 0.001
+    version: 0.002
   Attribute::Lexical::UNIVERSAL:
     file: lib/Attribute/Lexical.pm
-    version: 0.001
-generated_by: Module::Build version 0.280801
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.2.html
-  version: 1.2
-distribution_type: module
+    version: 0.002
+requires:
+  Carp: 0
+  Lexical::SealRequireHints: 0.003
+  Params::Classify: 0
+  constant: 0
+  if: 0
+  perl: 5.006001
+  strict: 0
+  warnings: 0
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.002

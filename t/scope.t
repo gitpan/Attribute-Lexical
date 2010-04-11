@@ -3,7 +3,7 @@ use strict;
 
 use Test::More tests => 48;
 
-BEGIN { $^H |= 0x20000 if $] < 5.008; }
+BEGIN { $^H |= 0x20000 if "$]" < 5.008; }
 
 sub foo { }
 our $foo;
@@ -246,7 +246,7 @@ is_deeply \@attributes, [];
 
 SKIP: {
 	skip "can't do runtime lexical stuff on this perl", 2
-		if $] < 5.009004;
+		if "$]" < 5.009004;
 
 @attributes = ();
 eval q{

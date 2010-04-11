@@ -3,7 +3,7 @@ use strict;
 
 use Test::More tests => 4;
 
-BEGIN { $^H |= 0x20000 if $] < 5.008; }
+BEGIN { $^H |= 0x20000 if "$]" < 5.008; }
 
 sub foo { }
 
