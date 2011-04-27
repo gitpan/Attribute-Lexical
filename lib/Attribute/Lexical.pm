@@ -136,14 +136,14 @@ use strict;
 use constant _KLUDGE_HINT_LOCALIZE_HH   => "$]" < 5.009004;
 use constant _KLUDGE_RUNTIME_HINTS      => "$]" < 5.009004;
 use constant _KLUDGE_FAKE_MRO           => "$]" < 5.009005;
-use constant _KLUDGE_UNIVERSAL_INVOCANT => 1;   # unsolved bug#68654
+use constant _KLUDGE_UNIVERSAL_INVOCANT => 1;   # bug#68654 or bug#81098
 
 use Carp qw(croak);
 use Lexical::SealRequireHints 0.003;
 use Params::Classify 0.000 qw(is_string is_ref);
 use if !_KLUDGE_FAKE_MRO, "mro";
 
-our $VERSION = "0.002";
+our $VERSION = "0.003";
 
 # Hints stored in %^H only maintain referenceful structure during the
 # compilation phase.  Copies of %^H that are accessible via caller(),
@@ -155,7 +155,7 @@ my %interned_handler;
 
 {
 	package Attribute::Lexical::UNIVERSAL;
-	our $VERSION = "0.002";
+	our $VERSION = "0.003";
 }
 
 unshift @UNIVERSAL::ISA, "Attribute::Lexical::UNIVERSAL";
@@ -240,9 +240,12 @@ foreach my $type (qw(SCALAR ARRAY HASH CODE)) { eval "
 		}
 	} else {
 		# On earlier perls next::can doesn't look at methods
-		# defined in UNIVERSAL and its superclases, where they are
-		# implicit ancestors.  In that case, start the search at
-		# UNIVERSAL, so that superclasses will be perceived.
+		# defined in UNIVERSAL and its superclases, where they
+		# are implicit ancestors.  The first attempt at fixing
+		# that was just as broken, jumping backward in the class
+		# precedence list when dealing with universal superclasses
+		# and a real invocant.	In either case, starting the
+		# search at the UNIVERSAL class produces sane results.
 		$next = (Attribute::Lexical::_KLUDGE_UNIVERSAL_INVOCANT ?
 				"UNIVERSAL" : $invocant)->next::can;
 	}
@@ -256,7 +259,7 @@ foreach my $type (qw(SCALAR ARRAY HASH CODE)) { eval "
 " or die $@; }
 
 sub _check_attribute_name($) {
-	croak "attribute name must be a string" unless &is_string;
+	croak "attribute name must be a string" unless is_string($_[0]);
 	croak "malformed attribute name" unless $_[0] =~ qr/\A
 		(?:SCALAR|ARRAY|HASH|CODE):
 		[A-Za-z_][0-9A-Za-z_]*
@@ -424,7 +427,7 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2009, 2010 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2009, 2010, 2011 Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 LICENSE
 

@@ -1,3 +1,21 @@
+version 0.003; 2011-04-27
+
+  * change usage of Params::Classify functions to take advantage of
+    custom ops in Params::Classify 0.012
+
+  * update commentary about universal superclass method resolution
+    kludge, reflecting bug#68654 having been temporarily replaced with
+    bug#81098 for Perl 5.13.8, thus still requiring the workaround but
+    for a slightly different reason
+
+  * use full stricture in test suite
+
+  * in Build.PL, complete declaration of configure-time requirements
+
+  * include META.json in distribution
+
+  * add MYMETA.json to .cvsignore
+
 version 0.002; 2010-04-11
 
   * bugfix: require bugfixed version of Lexical::SealRequireHints (for

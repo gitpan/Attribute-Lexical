@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.63.
+signed via the Module::Signature module, version 0.66.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,20 +14,21 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 408f5082815f07930381ba4ced54d3f8a87aa65d .cvsignore
-SHA1 8bacbe568025699b87997cfca5afbb0d86709c45 Build.PL
-SHA1 3464c785ed88dcf63c6cf2e5f71d6506ddc19b2a Changes
-SHA1 16edb10b61ca6788ac9006882377e50907e970e5 MANIFEST
-SHA1 a5220713e26ff7ea242e6d240b30f39f48680fdd META.yml
-SHA1 0e6591428591f8000687b728580dc1b279ddb008 Makefile.PL
-SHA1 3f5a8b216044ce66ad16382a60045bfc6d2ef5d8 README
-SHA1 657b6394caedeaa80aa439a4b45af1c1367fa368 lib/Attribute/Lexical.pm
-SHA1 a29d506093f2b0c64fb81cdfbd311aff50cfe1af lib/Attribute/Lexical/UNIVERSAL.pod
+SHA1 d9d7d4f87e2018ae2636b3cff0b815114658d2ec .cvsignore
+SHA1 083f36d4885de4131a65654a63a058343ce0e2bc Build.PL
+SHA1 96ed713089d2e0d4d0bfddc0f74ff9ac5b02270b Changes
+SHA1 03471e7080afa7793f24df2e49173056ac14ddf9 MANIFEST
+SHA1 9f4a1f211248c09595ada5b63109df0f5da477d2 META.json
+SHA1 97d0f87a3367a8fbc21b54e09573e0f9c6dbc6d5 META.yml
+SHA1 48e5a0c1a8488447ed5b331023306ad2a75489bd Makefile.PL
+SHA1 fa20895e14f17ce0a69e874623d0aff390003554 README
+SHA1 25baf340f62c3510ea8467c678fbc2603259c353 lib/Attribute/Lexical.pm
+SHA1 b25864dc5e4d1bff2f887d135b730451fe6579e9 lib/Attribute/Lexical/UNIVERSAL.pod
 SHA1 822192f0de27db39188a3dd4621e013bc75b32fa t/apply.t
 SHA1 b57b6b32e6f31ed258020768074c16c030e70854 t/caller.t
 SHA1 203029a34781c18f27ea8f32c931cb7f7c55cfe8 t/error.t
-SHA1 0e141eecf3ca4903ef38d9413b5403a9ddb0392f t/pod_cvg.t
-SHA1 74a957cd8b93f25672ecc6aa578a671d084dd343 t/pod_syn.t
+SHA1 904d9a4f76525e2303e4b0c168c68230f223c8de t/pod_cvg.t
+SHA1 65c75abdef6f01a5d1588a307f2ddfe2333dc961 t/pod_syn.t
 SHA1 577e64c0ae7bdb14bf64d9c313323fe3665c32f0 t/scope.t
 SHA1 ccdcc76edd298d252ef2bb5301dc835b6c45391d t/scope0.pm
 SHA1 68fc2bcfb1e010ed00453895871e5f073703236b t/scope1.pm
@@ -36,9 +37,9 @@ SHA1 a9f5a2bbd7367464d23b0e5468bbfd0a62c4b98e t/scope3.pm
 SHA1 836a53934e661b0d5eff3fa41ae8f75570c80488 t/scope4.pm
 SHA1 3f95114e31d26158978c9c05e717ec644e5e6320 t/share.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
+Version: GnuPG v1.4.10 (GNU/Linux)
 
-iEYEARECAAYFAkvBdSUACgkQOV9mt2VyAVEaBgCbBUpHu7YuRGI1GN1Ii2J0RgMn
-n6wAn0fzvQvbEjUdtgXKxL070774Ge/G
-=IzDH
+iEUEARECAAYFAk24YQoACgkQOV9mt2VyAVG8bQCfdGPTv+w5yJzkuQRQfGb0jsgM
+LIUAl0Y3o4xwn2XpLTdKtxxkM+zbCKk=
+=HbMW
 -----END PGP SIGNATURE-----

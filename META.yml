@@ -11,9 +11,10 @@ build_requires:
 configure_requires:
   Module::Build: 0
   perl: 5.006001
-distribution_type: module
+  strict: 0
+  warnings: 0
 dynamic_config: 0
-generated_by: 'Module::Build version 0.3607'
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110580'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -22,10 +23,10 @@ name: Attribute-Lexical
 provides:
   Attribute::Lexical:
     file: lib/Attribute/Lexical.pm
-    version: 0.002
+    version: 0.003
   Attribute::Lexical::UNIVERSAL:
     file: lib/Attribute/Lexical.pm
-    version: 0.002
+    version: 0.003
 requires:
   Carp: 0
   Lexical::SealRequireHints: 0.003
@@ -37,4 +38,4 @@ requires:
   warnings: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.002
+version: 0.003
