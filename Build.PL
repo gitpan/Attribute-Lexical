@@ -22,7 +22,7 @@ Module::Build->new(
 	},
 	requires => {
 		"Carp" => 0,
-		"Lexical::SealRequireHints" => "0.003",
+		"Lexical::SealRequireHints" => "0.005",
 		"Params::Classify" => 0,
 		"constant" => 0,
 		"if" => 0,

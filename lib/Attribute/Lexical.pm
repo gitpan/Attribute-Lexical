@@ -139,11 +139,11 @@ use constant _KLUDGE_FAKE_MRO           => "$]" < 5.009005;
 use constant _KLUDGE_UNIVERSAL_INVOCANT => 1;   # bug#68654 or bug#81098
 
 use Carp qw(croak);
-use Lexical::SealRequireHints 0.003;
+use Lexical::SealRequireHints 0.005;
 use Params::Classify 0.000 qw(is_string is_ref);
 use if !_KLUDGE_FAKE_MRO, "mro";
 
-our $VERSION = "0.003";
+our $VERSION = "0.004";
 
 # Hints stored in %^H only maintain referenceful structure during the
 # compilation phase.  Copies of %^H that are accessible via caller(),
@@ -155,7 +155,7 @@ my %interned_handler;
 
 {
 	package Attribute::Lexical::UNIVERSAL;
-	our $VERSION = "0.003";
+	our $VERSION = "0.004";
 }
 
 unshift @UNIVERSAL::ISA, "Attribute::Lexical::UNIVERSAL";
@@ -401,6 +401,9 @@ which won't work.  Usually the attributes will be simply unavailable
 at runtime, as if they were never declared, but some rare situations
 involving declaring attributes inside a C<BEGIN> block can confuse the
 module into applying the wrong attribute handler.
+
+Prior to Perl 5.9.3, the lexical state of attribute declarations does
+not propagate into string eval.
 
 Prior to Perl 5.8, attributes don't work at all on C<our> variables.
 Only function attributes can be used effectively on such old versions.

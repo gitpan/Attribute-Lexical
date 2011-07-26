@@ -1,7 +1,7 @@
 use warnings;
 use strict;
 
-use Test::More tests => 48;
+use Test::More tests => 50;
 
 BEGIN { $^H |= 0x20000 if "$]" < 5.008; }
 
@@ -243,6 +243,15 @@ eval q{
 };
 isnt $@, "";
 is_deeply \@attributes, [];
+
+@attributes = ();
+eval q{
+	use Attribute::Lexical "CODE:A0" => \&atthandler0;
+	BEGIN { my $x = "foo\x{666}"; $x =~ /foo\p{Alnum}/; }
+	sub foo :A0;
+};
+is $@, "";
+is_deeply \@attributes, [ [0,\&foo,"A0",undef] ];
 
 SKIP: {
 	skip "can't do runtime lexical stuff on this perl", 2

@@ -1,3 +1,13 @@
+version 0.004; 2011-07-26
+
+  * bugfix: require bugfixed version of Lexical::SealRequireHints (for
+    not exposing [perl #73174] prior to Perl 5.11)
+
+  * document that Perls prior to 5.9.3 don't propagate the right lexical
+    state into string eval
+
+  * test that handlers are scoped correctly across swash loading
+
 version 0.003; 2011-04-27
 
   * change usage of Params::Classify functions to take advantage of
